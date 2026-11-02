@@ -51,11 +51,19 @@ button{cursor:pointer}
 .shell{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:env(safe-area-inset-top,0px) 120px}
 
 /* login */
-.login{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}
-.login form{width:min(380px,100%);display:grid;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:28px 22px}
-.login h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:34px;letter-spacing:-.02em}
-.login p{margin:0;color:var(--muted)}
-.login .err{color:var(--danger);font-size:14px}
+
+/* sky: time-of-day canvas used by the login and the home hero (deliberately single-look, white type) */
+.sky{position:absolute;inset:0;width:100%;height:100%;display:block}
+.login{position:fixed;inset:0;display:grid;place-items:center;overflow:hidden;background:#0B1026;color:#fff;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}
+.login form{position:relative;width:min(380px,100%);display:grid;gap:14px;background:rgba(255,255,255,.12);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.28);border-radius:22px;padding:30px 22px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.login .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.login h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:clamp(38px,11vw,48px);line-height:.95;letter-spacing:-.03em;text-wrap:balance}
+.login p{margin:0;opacity:.85}
+.login .field label{color:rgba(255,255,255,.8)}
+.login .inp{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);color:#fff}
+.login .inp:focus{outline:none;border-color:#fff}
+.login .btn{background:#fff;color:#141B3A;padding:13px;font-size:16px}
+.login .err{color:#FFD2CC;font-size:14px}
 .signout{border:0;background:transparent;color:var(--muted);font-size:12px;text-decoration:underline;padding:4px}
 
 /* header */
@@ -199,6 +207,64 @@ textarea.inp{resize:vertical;min-height:70px;line-height:1.45}
 .wd .bar2.today{outline:1.5px solid var(--accent);outline-offset:1px}
 .wd span{font-family:var(--f-mono);font-size:10px;color:var(--muted)}
 
+
+/* home */
+body.home .top .dayrow, body.home .top #cap{display:none}
+body.home .top{padding-block:10px 4px}
+.hero{position:relative;overflow:hidden;border-radius:26px;color:#fff;background:#1B2450;min-height:340px;isolation:isolate}
+.hero-in{position:relative;z-index:1;display:grid;gap:18px;padding:22px 20px 20px;min-height:340px;align-content:space-between}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hero .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.hero .clock{font-family:var(--f-mono);font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:5px 11px;white-space:nowrap}
+.greet{margin:0;font-family:var(--f-display);font-weight:800;font-size:clamp(40px,11.5vw,68px);line-height:.92;letter-spacing:-.035em;text-wrap:balance;text-shadow:0 2px 24px rgba(0,0,0,.18)}
+.greet span{display:inline-block}
+.hero .sub{margin:10px 0 0;font-size:17px;line-height:1.4;max-width:34ch;opacity:.95}
+.dayleft{display:grid;gap:6px}
+.dayleft .row{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;opacity:.9;font-variant-numeric:tabular-nums}
+.dayleft .track{height:4px;border-radius:4px;background:rgba(255,255,255,.22);overflow:hidden}
+.dayleft .track i{display:block;height:100%;background:#fff;border-radius:4px}
+.cap.glass{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.cap.glass:focus-within{border-color:#fff}
+.cap.glass input{color:#fff}
+.cap.glass input::placeholder{color:rgba(255,255,255,.78)}
+.cap.glass .btn{background:#fff;color:#141B3A}
+@media (prefers-reduced-motion:no-preference){
+  .greet span{opacity:0;transform:translateY(.35em);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .hero .sub,.hero .dayleft,.hero .cap{opacity:0;animation:fadein .6s ease forwards;animation-delay:.55s}
+}
+body.seen .greet span,body.seen .hero .sub,body.seen .hero .dayleft,body.seen .hero .cap{animation:none;opacity:1;transform:none}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes fadein{to{opacity:1}}
+
+.now{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px}
+.now .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.now .t{font-family:var(--f-display);font-weight:700;font-size:20px;line-height:1.2;margin-top:4px;overflow-wrap:anywhere}
+.now .s{font-size:13px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.now .go{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;border:0;background:var(--accent);color:var(--accent-ink)}
+.now .go svg{width:22px;height:22px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 12px 10px;display:grid;gap:2px;min-width:0}
+.stat b{font-family:var(--f-display);font-weight:800;font-size:28px;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.stat.hot{background:var(--mark-soft);border-color:transparent}
+.stat.hot b,.stat.hot span{color:var(--mark-ink)}
+
+.spaces{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (min-width:640px){.spaces{grid-template-columns:repeat(3,1fr)}}
+.space{position:relative;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:14px;display:grid;gap:10px;align-content:space-between;min-height:132px;min-width:0;color:var(--ink)}
+.space:hover{border-color:var(--sc)}
+.space .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--sc) 16%,transparent);color:var(--sc)}
+.space .ic svg{width:20px;height:20px}
+.space h3{margin:0;font-family:var(--f-display);font-size:17px;font-weight:700}
+.space p{margin:2px 0 0;font-size:13px;color:var(--muted);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.space .big{font-family:var(--f-mono);font-size:12px;color:var(--sc);font-weight:700}
+.space.soon{border-style:dashed;background:transparent;cursor:default}
+.space.soon .big{color:var(--muted)}
+.quote{text-align:center;color:var(--muted);font-size:14px;padding:6px 10px 0;text-wrap:balance}
+.quote b{display:block;font-family:var(--f-display);color:var(--ink);font-size:18px;font-weight:700;margin-bottom:2px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:30;width:100%;height:100%}
+
 #toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;z-index:20;max-width:calc(100% - 32px);text-align:center;transition:opacity .2s}
 @media (min-width:700px){#toast{bottom:32px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -206,13 +272,15 @@ textarea.inp{resize:vertical;min-height:70px;line-height:1.45}
 </head>
 <body>
 <section class="login" id="login" hidden>
+  <canvas class="sky" id="loginSky" aria-hidden="true"></canvas>
   <form id="loginForm" autocomplete="on">
-    <h1>Daybook</h1>
-    <p>Sign in to open your day.</p>
+    <div class="eyebrow" id="lDate"></div>
+    <h1 id="lGreet">Welcome, sir.</h1>
+    <p>Everything you're carrying, in one place. Sign in to open your day.</p>
     <div class="field"><label for="lEmail">Email</label><input class="inp" id="lEmail" type="email" autocomplete="username" required></div>
     <div class="field"><label for="lPass">Password</label><input class="inp" id="lPass" type="password" autocomplete="current-password" required></div>
     <div class="err" id="lErr" hidden></div>
-    <button class="btn" type="submit" id="lBtn" style="padding:12px">Sign in</button>
+    <button class="btn" type="submit" id="lBtn">Sign in</button>
   </form>
 </section>
 
@@ -227,7 +295,8 @@ textarea.inp{resize:vertical;min-height:70px;line-height:1.45}
       <button class="btn" type="submit">Add</button>
     </form>
     <nav class="tabs" id="nav" aria-label="Sections">
-      <button data-v="today" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Today<span id="todayBadge"></span></span></button>
+      <button data-v="home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg><span>Home</span></button>
+      <button data-v="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Today<span id="todayBadge"></span></span></button>
       <button data-v="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span>To-dos</span></button>
       <button data-v="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><span>Notes</span></button>
       <button data-v="focus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg><span>Focus</span></button>
@@ -236,6 +305,7 @@ textarea.inp{resize:vertical;min-height:70px;line-height:1.45}
   <main id="view" aria-live="polite"></main>
 </div>
 <div id="toast" hidden></div>
+<canvas id="confetti" hidden aria-hidden="true"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
@@ -273,7 +343,7 @@ function nextDue(t){const today=todayK();let n=stepDate(t.due||today,t.repeat);w
 
 /* ---------- state ---------- */
 const S={tasks:{},notes:{},profile:{doneDays:{},focusDays:{},top3:{date:'',ids:[]}},mode:'loading'};
-const UI={view:'today',filter:'open',openTask:null,confirmDel:null,noteId:null,noteQ:'',confirmClear:false,loadNote:''};
+const UI={view:'home',filter:'open',openTask:null,confirmDel:null,noteId:null,noteQ:'',confirmClear:false,loadNote:''};
 let API=null;
 let noteTimer=null,noteDirty=null;
 
@@ -348,7 +418,7 @@ function subscribe(){
     .subscribe();
 }
 
-function showLogin(){$('#app').hidden=true;$('#login').hidden=false;setTimeout(()=>$('#lEmail').focus(),50)}
+function showLogin(){$('#app').hidden=true;$('#login').hidden=false;$('#lDate').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});$('#lDate').textContent+=' · '+greeting();startSky($('#loginSky'));setTimeout(()=>$('#lEmail').focus(),50)}
 async function startApp(user){
   USER=user;$('#login').hidden=true;$('#app').hidden=false;
   S.mode='loading';render(true);
@@ -389,6 +459,7 @@ function toggleDone(id){
     if(t.repeat&&t.repeat!=='none'){t.due=nextDue(t);t.steps=(t.steps||[]).map(s=>({...s,done:false}));t.lastDoneDate=today;toast('Done. Next one: '+(dueInfo(t)?.txt||fmtShort(t.due)))}
     else{t.done=true;t.doneAt=Date.now();t.lastDoneDate=today;const n=(profile().doneDays[today]||0)+1;toast(n===1?'First one done. Keep going.':n+' done today')}
     t.inbox=false;bump(1);
+    {const tops=top3Ids();if(tops.length===3&&tops.includes(id)){const rest=tops.filter(x=>x!==id).every(x=>S.tasks[x]&&(S.tasks[x].done||S.tasks[x].lastDoneDate===today));if(rest)setTimeout(()=>{confetti();toast('Top 3 done. That was the day’s real work.')},150)}}
   }else{t.done=false;t.doneAt=null;if(t.lastDoneDate===today){t.lastDoneDate=null;bump(-1)}}
   saveTask(t);render();
 }
@@ -415,8 +486,10 @@ function render(force){
   const v=$('#view');
   if(S.mode==='loading'){v.innerHTML='<div class="empty"><b>Opening your day…</b></div>';return}
   const note=UI.loadNote?`<div class="local-note">${esc(UI.loadNote)}</div>`:'';
-  v.innerHTML=note+({today:vToday,tasks:vTasks,notes:vNotes,focus:vFocus}[UI.view])();
+  document.body.classList.toggle('home',UI.view==='home');
+  v.innerHTML=note+({home:vHome,today:vToday,tasks:vTasks,notes:vNotes,focus:vFocus}[UI.view])();
   if(UI.view==='focus')paintTimer();
+  if(UI.view==='home'){startSky($('#heroSky'));tickHome();if(!document.body.classList.contains('seen'))setTimeout(()=>document.body.classList.add('seen'),1600)}
 }
 document.addEventListener('focusout',()=>setTimeout(()=>{if(pendingRender&&!typing())render()},0));
 
@@ -590,12 +663,170 @@ function finishFocus(){
 function beep(){try{const a=new (window.AudioContext||window.webkitAudioContext)();[0,.25,.5].forEach(t=>{const o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.setValueAtTime(.0001,a.currentTime+t);g.gain.exponentialRampToValueAtTime(.2,a.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+t+.2);o.connect(g).connect(a.destination);o.start(a.currentTime+t);o.stop(a.currentTime+t+.22)})}catch(e){}}
 if(F.running){if(secsLeft()<=0){setTimeout(finishFocus,1500)}else startTick()}
 
+
+/* ---------- sky ---------- */
+function phase(d=new Date()){const h=d.getHours()+d.getMinutes()/60;if(h>=5&&h<8)return 'dawn';if(h>=8&&h<17)return 'day';if(h>=17&&h<20)return 'dusk';return 'night'}
+const SKY={
+  dawn:{top:'#2B3A7A',mid:'#C9739A',low:'#F7B98A',blob:['#FFD6A8','#E58FB0','#8EA4F0'],orb:'#FFE3B0'},
+  day:{top:'#123A93',mid:'#2B62C6',low:'#6F9DE3',blob:['#9CC8FF','#5FC1E8','#5A74E6'],orb:'#FFE9B0'},
+  dusk:{top:'#271B4F',mid:'#8B3F78',low:'#F08A5D',blob:['#FFB27A','#C0508A','#5D47B8'],orb:'#FFC48A'},
+  night:{top:'#060A1C',mid:'#121B45',low:'#28306B',blob:['#3B4BB5','#6A3FA0','#1E6E9E'],orb:'#E8EEFF'},
+};
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const skies=new Map();let skyRAF=0;
+function startSky(cv){
+  if(!cv)return;
+  const stars=Array.from({length:70},()=>({x:Math.random(),y:Math.random()*.75,r:Math.random()*1.2+.3,p:Math.random()*6.28}));
+  const blobs=[0,1,2].map(i=>({x:Math.random(),y:.35+Math.random()*.5,r:.45+Math.random()*.35,s:.00004+Math.random()*.00005,o:Math.random()*6.28,c:i}));
+  skies.set(cv,{stars,blobs});
+  if(!skyRAF)skyRAF=requestAnimationFrame(drawSkies);
+}
+function drawSkies(t){
+  skyRAF=0;
+  for(const [cv,st] of skies){
+    if(!cv.isConnected){skies.delete(cv);continue}
+    const dpr=Math.min(2,window.devicePixelRatio||1),w=cv.clientWidth,h=cv.clientHeight;
+    if(!w||!h)continue;
+    if(cv.width!==Math.round(w*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+    const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);
+    const now=new Date(),ph=phase(now),P=SKY[ph];
+    const g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,P.top);g.addColorStop(.6,P.mid);g.addColorStop(1,P.low);
+    c.fillStyle=g;c.fillRect(0,0,w,h);
+    const tt=reduceMotion?0:t;
+    c.globalCompositeOperation='lighter';
+    st.blobs.forEach(b=>{
+      const x=(b.x+Math.sin(tt*b.s+b.o)*.12)*w,y=(b.y+Math.cos(tt*b.s*1.3+b.o)*.08)*h,r=b.r*Math.max(w,h);
+      const rg=c.createRadialGradient(x,y,0,x,y,r);rg.addColorStop(0,P.blob[b.c]+(ph==='day'?'30':'55'));rg.addColorStop(1,P.blob[b.c]+'00');
+      c.fillStyle=rg;c.fillRect(0,0,w,h);
+    });
+    // the day's arc: the orb (sun or moon) sits where we are in the day
+    const mins=now.getHours()*60+now.getMinutes(),f=mins/1440;
+    const ox=w*(.08+.84*f),oy=h*(.78-.62*Math.sin(Math.PI*f));
+    const og=c.createRadialGradient(ox,oy,0,ox,oy,Math.min(w,h)*(ph==='day'?.3:.45));og.addColorStop(0,P.orb+(ph==='day'?'99':'cc'));og.addColorStop(.06,P.orb+(ph==='day'?'44':'88'));og.addColorStop(1,P.orb+'00');
+    c.fillStyle=og;c.fillRect(0,0,w,h);
+    c.globalCompositeOperation='source-over';
+    const sc=c.createLinearGradient(0,0,w*.75,0);sc.addColorStop(0,'rgba(5,10,35,.28)');sc.addColorStop(1,'rgba(5,10,35,0)');c.fillStyle=sc;c.fillRect(0,0,w,h);
+    c.fillStyle=P.orb;c.beginPath();c.arc(ox,oy,Math.max(5,Math.min(w,h)*.022),0,6.283);c.fill();
+    if(ph==='night'||ph==='dawn'){
+      st.stars.forEach(s=>{const a=(ph==='dawn'?.35:.85)*(.55+.45*Math.sin(tt*.0015+s.p));c.fillStyle='rgba(255,255,255,'+a.toFixed(3)+')';c.beginPath();c.arc(s.x*w,s.y*h,s.r,0,6.283);c.fill()});
+    }
+    // horizon line for the arc
+    c.strokeStyle='rgba(255,255,255,.18)';c.setLineDash([2,6]);c.beginPath();
+    for(let i=0;i<=40;i++){const ff=i/40,x=w*(.08+.84*ff),y=h*(.78-.62*Math.sin(Math.PI*ff));i?c.lineTo(x,y):c.moveTo(x,y)}c.stroke();c.setLineDash([]);
+  }
+  if(skies.size&&!reduceMotion&&document.visibilityState==='visible')skyRAF=requestAnimationFrame(drawSkies);
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&skies.size&&!skyRAF)skyRAF=requestAnimationFrame(drawSkies)});
+addEventListener('resize',()=>{if(skies.size&&!skyRAF)skyRAF=requestAnimationFrame(drawSkies)});
+
+/* ---------- home ---------- */
+const LINES=[
+  ['Start small.','The first step only has to be tiny.'],
+  ['One thing at a time.','Finish it, then pick the next.'],
+  ['Write it down.','A clear head does better work.'],
+  ['Done beats perfect.','Ship it, then improve it.'],
+  ['Protect the morning.','Do the hard thing before the noise starts.'],
+  ['Show up again.','Streaks are built on ordinary days.'],
+  ['Make it easy to begin.','Lay out the first move tonight.'],
+];
+function greeting(d=new Date()){const h=d.getHours();return h<5?'Late night':h<12?'Good morning':h<17?'Good afternoon':h<23?'Good evening':'Late night'}
+function heroSub(){
+  const k=todayK(),open=openTasks(),tops=top3Ids();
+  const doneTop=tops.filter(id=>S.tasks[id]&&(S.tasks[id].done||S.tasks[id].lastDoneDate===k)).length;
+  const over=open.filter(t=>t.due&&t.due<k).length,dueT=open.filter(t=>t.due===k).length;
+  if(!Object.keys(S.tasks).length&&!Object.keys(S.notes).length)return 'Everything starts here. Put the first thing on your mind below.';
+  if(tops.length===3&&doneTop===3)return 'Your Top 3 is done. Anything else today is a bonus.';
+  const bits=[];
+  if(tops.length)bits.push(`${tops.length-doneTop} of your Top 3 still open`);else bits.push('No Top 3 picked yet');
+  if(over)bits.push(`${over} overdue`);
+  if(dueT)bits.push(`${dueT} more due today`);
+  return bits.join(' · ')+'.';
+}
+function nextUp(){
+  const k=todayK();
+  const t=top3Ids().map(id=>S.tasks[id]).find(t=>t&&!t.done&&t.lastDoneDate!==k);
+  if(t)return {t,why:'From your Top 3'};
+  const o=openTasks()[0];
+  if(o&&o.due&&o.due<k)return {t:o,why:'Overdue'};
+  if(o&&o.due===k)return {t:o,why:'Due today'};
+  return null;
+}
+function vHome(){
+  const now=new Date(),k=todayK(),p=profile(),open=openTasks();
+  const tops=top3Ids(),doneTop=tops.filter(id=>S.tasks[id]&&(S.tasks[id].done||S.tasks[id].lastDoneDate===k)).length;
+  const inbox=open.filter(t=>!t.due&&t.inbox).length,over=open.filter(t=>t.due&&t.due<k).length;
+  const notes=Object.values(S.notes).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updated||0)-(a.updated||0));
+  const st=streak(),fm=p.focusDays[k]||0,dn=p.doneDays[k]||0;
+  const n=nextUp(),nx=n&&(n.t.steps||[]).find(s=>!s.done);
+  const words=(greeting(now)+', sir.').split(' ');
+  const L=LINES[Math.floor(parseK(k)/864e5)%LINES.length];
+  const I={
+    today:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+    tasks:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>',
+    notes:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg>',
+    focus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>',
+    money:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h15a3 3 0 013 3v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 7l12-4 2 4"/><circle cx="16.5" cy="14" r="1.3"/></svg>',
+    go:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  };
+  return `
+  <section class="hero" aria-label="Welcome">
+    <canvas class="sky" id="heroSky" aria-hidden="true"></canvas>
+    <div class="hero-in">
+      <div class="hero-top"><div class="eyebrow">${esc(now.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}))}</div><div class="clock" id="hClock"></div></div>
+      <div><h1 class="greet">${words.map((w,i)=>`<span style="animation-delay:${i*90}ms">${esc(w)}</span>`).join(' ')}</h1>
+        <p class="sub">${esc(heroSub())}</p></div>
+      <div class="dayleft"><div class="row"><span id="hLeft"></span><span id="hPct"></span></div><div class="track"><i id="hBar"></i></div></div>
+      <form class="cap glass" data-form="capHome" autocomplete="off"><input id="capHome" placeholder="What's on your mind?" aria-label="Quick capture"><button class="btn" type="submit">Add</button></form>
+    </div>
+  </section>
+
+  ${n?`<section class="now"><div style="min-width:0"><div class="k">Right now · ${esc(n.why)}</div><div class="t">${esc(n.t.title)}</div>${nx?`<div class="s">First step: ${esc(nx.text)}</div>`:''}</div>
+    <button class="go" data-act="focusTask" data-id="${n.t.id}" aria-label="Start focus on this" title="Start focus">${I.go}</button></section>`:''}
+
+  <section class="stats" aria-label="Today in numbers">
+    <div class="stat"><b>${dn}</b><span>done today</span></div>
+    <div class="stat ${st>=2?'hot':''}"><b>${st}</b><span>day streak</span></div>
+    <div class="stat"><b>${fm}</b><span>min focused</span></div>
+  </section>
+
+  <section class="sec"><div class="sec-h"><h2>Your spaces</h2></div>
+    <div class="spaces">
+      <button class="space" style="--sc:var(--mark)" data-act="nav" data-v="today"><div class="ic">${I.today}</div><div><h3>Today</h3><p>${tops.length?`Top 3: ${doneTop} of ${tops.length} done`:'Pick your Top 3'}${over?` · ${over} overdue`:''}</p></div></button>
+      <button class="space" style="--sc:var(--accent)" data-act="nav" data-v="tasks"><div class="ic">${I.tasks}</div><div><h3>To-dos</h3><p>${open.length} open${inbox?` · ${inbox} in inbox`:''}</p></div></button>
+      <button class="space" style="--sc:#2E9E8F" data-act="nav" data-v="notes"><div class="ic">${I.notes}</div><div><h3>Notes</h3><p>${notes.length?esc(notes[0].title||'Untitled')+(notes.length>1?` · +${notes.length-1} more`:''):'Nothing written yet'}</p></div></button>
+      <button class="space" style="--sc:#7A5AE0" data-act="nav" data-v="focus"><div class="ic">${I.focus}</div><div><h3>Focus</h3><p>${F.running?'Session running':fm?`${fm} min today`:'Start a session'}</p></div></button>
+      <div class="space soon" style="--sc:var(--muted)"><div class="ic">${I.money}</div><div><h3>Spending</h3><p>Where the money goes</p></div><div class="big">Coming next</div></div>
+    </div></section>
+
+  <p class="quote"><b>${esc(L[0])}</b>${esc(L[1])}</p>`;
+}
+function tickHome(){
+  const now=new Date(),c=$('#hClock');if(!c)return;
+  c.textContent=now.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+  const mins=now.getHours()*60+now.getMinutes(),left=1440-mins;
+  $('#hLeft').textContent=`${Math.floor(left/60)}h ${pad(left%60)}m left today`;
+  $('#hPct').textContent=Math.round(mins/1440*100)+'% of the day gone';
+  $('#hBar').style.width=(mins/1440*100).toFixed(1)+'%';
+}
+setInterval(()=>{if(UI.view==='home')tickHome()},15000);
+
+/* ---------- celebration ---------- */
+function confetti(){
+  if(reduceMotion)return;
+  const cv=$('#confetti');cv.hidden=false;const c=cv.getContext('2d');
+  const w=cv.width=innerWidth,h=cv.height=innerHeight;
+  const cols=['#E9A825','#2D44C4','#2E9E8F','#7A5AE0','#F08A5D','#FFFFFF'];
+  const ps=Array.from({length:140},()=>({x:w/2+(Math.random()-.5)*w*.3,y:h*.35,vx:(Math.random()-.5)*14,vy:-Math.random()*14-4,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,c:cols[Math.floor(Math.random()*cols.length)],s:4+Math.random()*5}));
+  let f=0;(function step(){c.clearRect(0,0,w,h);ps.forEach(p=>{p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;c.save();c.translate(p.x,p.y);c.rotate(p.r);c.fillStyle=p.c;c.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);c.restore()});
+    if(++f<150)requestAnimationFrame(step);else{c.clearRect(0,0,w,h);cv.hidden=true}})();
+}
+
 /* ---------- events ---------- */
 function go(v){UI.view=v;UI.openTask=null;UI.confirmDel=null;try{if(location.hash!=='#'+v)history.replaceState(null,'','#'+v)}catch(e){}render(true);window.scrollTo(0,0)}
 $('#pills').addEventListener('click',e=>{if(e.target.id==='signout')signOut()});
 $('#nav').addEventListener('click',e=>{const b=e.target.closest('button[data-v]');if(b)go(b.dataset.v)});
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['today','tasks','notes','focus'].includes(h)&&h!==UI.view){UI.view=h;render(true)}});
-{const h=location.hash.slice(1);if(['today','tasks','notes','focus'].includes(h))UI.view=h}
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['home','today','tasks','notes','focus'].includes(h)&&h!==UI.view){UI.view=h;render(true)}});
+{const h=location.hash.slice(1);if(['home','today','tasks','notes','focus'].includes(h))UI.view=h}
 
 $('#cap').addEventListener('submit',e=>{e.preventDefault();const i=$('#capIn');if(!API)return;addTask(i.value);i.value='';render(true)});
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();$('#capIn').focus()}});
@@ -605,6 +836,7 @@ $('#view').addEventListener('click',e=>{
   const a=el.dataset.act,id=el.dataset.id,t=S.tasks[id];
   if(a!=='del'&&a!=='delNote'&&a!=='clearDone'){UI.confirmDel=null;UI.confirmClear=false}
   switch(a){
+    case 'nav': go(el.dataset.v);break;
     case 'done': toggleDone(id);break;
     case 'noop': e.preventDefault();toast('Repeating task. It’s back on '+(dueInfo(t)?.txt||'its next date'));break;
     case 'open': UI.openTask=UI.openTask===id?null:id;render(true);break;
@@ -635,6 +867,7 @@ $('#view').addEventListener('click',e=>{
   }
 });
 
+$('#view').addEventListener('submit',e=>{const f=e.target;if(f.dataset.form==='capHome'){e.preventDefault();const i=$('#capHome');if(!API||!i.value.trim())return;addTask(i.value);i.value='';render(true)}});
 $('#view').addEventListener('change',e=>{
   const el=e.target,f=el.dataset.f,id=el.dataset.id,t=S.tasks[id];
   if(f==='pick'&&el.value){setTop3(el.value,true);return}
